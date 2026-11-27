@@ -1,0 +1,13 @@
+import { getActor } from "@/lib/actor";
+import { assertSameOrigin, handle, ok } from "@/lib/http";
+import { moveWishlistItemToCart } from "@/services/wishlist";
+
+export async function POST(request: Request, context: { params: Promise<{ id: string }> }) {
+  try {
+    assertSameOrigin(request);
+    const { id } = await context.params;
+    return ok(await moveWishlistItemToCart(await getActor(), id));
+  } catch (error) {
+    return handle(error);
+  }
+}

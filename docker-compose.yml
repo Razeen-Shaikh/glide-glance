@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: glide-glance-db
+    environment:
+      POSTGRES_USER: glide
+      POSTGRES_PASSWORD: glide
+      POSTGRES_DB: glide_glance
+    ports:
+      - "5434:5432"
+    volumes:
+      - glide_glance_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U glide -d glide_glance"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+volumes:
+  glide_glance_pg:
